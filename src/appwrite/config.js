@@ -8,8 +8,8 @@ export class ConfigService {
 
 	constructor() {
 		this.client
-			.setEndpoint(conf.appWriteUrl)
-			.setProject(conf.appWriteProjectId);
+			.setEndpoint(conf.appwriteUrl)
+			.setProject(conf.appwriteProjectId);
 		this.databases = new Databases(this.client);
 		this.storage = new Storage(this.client);
 	}
@@ -17,8 +17,8 @@ export class ConfigService {
 	async createPost({ title, slug, content, featuredImage, status, userId }) {
 		try {
 			return await this.databases.createDocument(
-				conf.appWriteDatabaseId,
-				conf.appWritePostsCollectionId,
+				conf.appwriteDatabaseId,
+				conf.appwriteCollectionId,
 				slug,
 				{
 					title,
@@ -37,8 +37,8 @@ export class ConfigService {
 	async updatePost(slug, { title, content, featuredImage, status }) {
 		try {
 			return await this.databases.updateDocument(
-				conf.appWriteDatabaseId,
-				conf.appWritePostsCollectionId,
+				conf.appwriteDatabaseId,
+				conf.appwriteCollectionId,
 				slug,
 				{
 					title,
@@ -56,8 +56,8 @@ export class ConfigService {
 	async deletePost(slug) {
 		try {
 			await this.databases.deleteDocument(
-				conf.appWriteDatabaseId,
-				conf.appWritePostsCollectionId,
+				conf.appwriteDatabaseId,
+				conf.appwriteCollectionId,
 				slug
 			);
 			return true;
@@ -70,8 +70,8 @@ export class ConfigService {
 	async getPost(slug) {
 		try {
 			return await this.databases.getDocument(
-				conf.appWriteDatabaseId,
-				conf.appWritePostsCollectionId,
+				conf.appwriteDatabaseId,
+				conf.appwriteCollectionId,
 				slug
 			);
 		} catch (error) {
@@ -83,8 +83,8 @@ export class ConfigService {
 	async getPosts() {
 		try {
 			return await this.databases.listDocuments(
-				conf.appWriteDatabaseId,
-				conf.appWritePostsCollectionId,
+				conf.appwriteDatabaseId,
+				conf.appwriteCollectionId,
 				[Query.equal("status", "active")]
 			);
 		} catch (error) {
@@ -97,7 +97,7 @@ export class ConfigService {
 	async uploadFile(file) {
 		try {
 			return await this.storage.createFile(
-				conf.appWriteStorageBucketId,
+				conf.appwriteBucketId,
 				ID.unique(),
 				file
 			);
@@ -110,7 +110,7 @@ export class ConfigService {
 	// Deletes a file from Appwrite Storage
 	async deleteFile(fileId) {
 		try {
-			await this.storage.deleteFile(conf.appWriteStorageBucketId, fileId);
+			await this.storage.deleteFile(conf.appwriteBucketId, fileId);
 			return true;
 		} catch (error) {
 			console.error("Error deleting file:", error);
@@ -119,7 +119,7 @@ export class ConfigService {
 	}
 
 	getFilePreview(fileId) {
-		return this.storage.getFilePreview(conf.appWriteStorageBucketId, fileId);
+		return this.storage.getFilePreview(conf.appwriteBucketId, fileId);
 	}
 }
 
